@@ -24,7 +24,7 @@ export class AppStateManager {
         firebase.auth().onAuthStateChanged((user: firebase.User | null) => {
             if (!user) return;
             userStore.setLocalUser(new UserItem({uid: user.uid, name:user.displayName}));
-            new MultiUserPersistence(app, rootStore, stateContainer, {sessionUserId: user.uid, sendPatchIntervalTime: 250});
+            new MultiUserPersistence(app, rootStore, stateContainer, {sessionUserId: user.uid, sendPatchIntervalTime: 150});
             // new SingleUserPersistence(app ,rootStore, stateContainer);
         });
     }

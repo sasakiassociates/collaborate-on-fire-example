@@ -7,20 +7,20 @@ import {action, computed, makeObservable} from "mobx";
 import {AppStateManager} from "./AppStateManager";
 import {IRootStore, IUndoManager} from "@strategies/collaborate-on-fire";
 
-const palette = ["#7499d9",
+const palette = ["#5483d5",
     "#8abf36",
-    "#7449cb",
-    "#64bf68",
+    "#6334c0",
+    "#64b283",
     "#ce52c0",
     "#4c7935",
-    "#68529c",
+    "#9474de",
     "#d0ac49",
     "#c4608c",
     "#52b8a4",
-    "#df4440",
-    "#836e30",
-    "#913a36",
-    "#d37b48"];
+    "#d53733",
+    "#72562e",
+    "#7e2824",
+    "#d26c32"];
 
 const fakeSomeUsers = (root: RootStore) => {
 

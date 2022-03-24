@@ -1,8 +1,11 @@
-import {applySnapshot, getSnapshot, model, Model, modelAction, objectMap, prop} from "mobx-keystone";
-import {action, computed, makeObservable, observable} from "mobx";
-import {IUserStore} from "@strategies/collaborate-on-fire";
-import {Rectangle} from "./FileModel";
+import { applySnapshot, getSnapshot, model, Model, modelAction, objectMap, prop } from "mobx-keystone";
+import { action, computed, makeObservable, observable } from "mobx";
+import { IUserStore } from "@strategies/collaborate-on-fire";
+import { Rectangle } from "./FileModel";
 
+const timestamp = ()=> {
+    return Math.floor(Date.now() / 1000);
+}
 @model('cof/UserItem')
 export class UserItem extends Model({
     uid: prop<string>(''),
@@ -10,11 +13,20 @@ export class UserItem extends Model({
     name: prop<string>(''),
     cursorX: prop<number>(0),
     cursorY: prop<number>(0),
+    lastUpdate: prop<number>(0),
 }) {
+
     @modelAction
-    setCursorPosition(x:number, y:number) {
+    setColor(color: string) {
+        this.color = color;
+        this.lastUpdate = timestamp();
+    }
+
+    @modelAction
+    setCursorPosition(x: number, y: number) {
         this.cursorX = x;
         this.cursorY = y;
+        this.lastUpdate = timestamp();
     }
 }
 
@@ -27,9 +39,22 @@ class UserStore extends Model({
     @observable
     localUserId: string = '';
 
-    constructor(props:any) {
+    @observable
+    timeStamp: number = 0;
+
+    constructor(props: any) {
         super(props);
         makeObservable(this);
+
+        //every second, update the timestamp to trigger updates like users becoming 'stale'
+        setInterval(() => {
+            this.setTimeStamp(timestamp());
+        }, 1000);
+    }
+
+    @action
+    setTimeStamp(t:number) {
+        this.timeStamp = t;
     }
 
     @computed
@@ -42,8 +67,15 @@ class UserStore extends Model({
     }
 
     @computed
+    get staleTimeStamp() {
+        let seconds = 60;
+        return this.timeStamp - seconds;
+    }
+
+
+    @computed
     get remoteUsers() {
-        return this.allUsers.filter(u => u.uid !== this.localUserId);
+        return this.allUsers.filter(u => u.uid !== this.localUserId && u.lastUpdate > this.staleTimeStamp);
     }
 
     @computed
@@ -60,6 +92,8 @@ class UserStore extends Model({
 
     @modelAction
     applyUserSnapshot(userKey: string, snapshot: any) {
+        console.log('applyUserSnapshot', userKey, snapshot);
+
         const existingItem = this.userCollection.find(v => v.uid === userKey);
         if (!existingItem) {
             this.userCollection.push(new UserItem(snapshot));

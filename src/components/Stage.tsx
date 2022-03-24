@@ -14,7 +14,6 @@ export const Stage = observer(({ width, height }: StageProps) => {
     const stageSvgRef = useRef<SVGSVGElement | null>(null);
     //
     const mouseMove = (e:React.MouseEvent<SVGSVGElement>) => {
-        console.log('MOUSE MOVE', e);
         const rect = stageSvgRef.current?.getBoundingClientRect();
         if (rect) {
             const x = e.clientX - rect.left;

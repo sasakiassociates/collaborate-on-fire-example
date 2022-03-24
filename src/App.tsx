@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
-import {Stage} from "./components/Stage";
-import {useStores} from "@strategies/stores";
+import React, { useState } from 'react';
+import { Stage } from "./components/Stage";
+import { useStores } from "@strategies/stores";
 import RootStore from "./stores/RootStore";
 import './App.css';
-import {observer} from "mobx-react";
+import { observer } from "mobx-react";
 import { Toolbar } from "./components/Toolbar";
+import { UserInfo } from "./components/UserInfo";
 
 type AppProps = {};
 const App = observer((props: AppProps) => {
@@ -29,7 +30,7 @@ const App = observer((props: AppProps) => {
                 <p>{root.likeColorsExist ? 'active' : ''} {root.likeColorsAllTouching ? '👍' : '👎'}</p>
                 <Stage width={width} height={height}/>
                 <Toolbar width={width} height={height}/>
-
+                <UserInfo/>
             </>}
         </div>
     );
