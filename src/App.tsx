@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import {Stage} from "./components/Stage";
+import {useStores} from "@strategies/stores";
+import RootStore from "./stores/RootStore";
 import './App.css';
+import {observer} from "mobx-react";
+import { Toolbar } from "./components/Toolbar";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+type AppProps = {};
+const App = observer((props: AppProps) => {
+    const root = useStores().root as RootStore;
 
+    const width = 1000;
+    const height = 700;
+
+    return (
+        <div className="App">
+            <div>LOGGED IN {root.loggedIn ? 'TRUE' : 'FALSE'}</div>
+            <div>localUserId {root.userStore.localUserId}</div>
+            {!root.loggedIn && <>
+                <button onClick={() => {
+                    root.login();
+                }
+                }>LOGIN
+                </button>
+            </>}
+            {root.loggedIn && <>
+                <h3>Score: {root.file.score}</h3>
+                <p>{root.likeColorsExist ? 'active' : ''} {root.likeColorsAllTouching ? '👍' : '👎'}</p>
+                <Stage width={width} height={height}/>
+                <Toolbar width={width} height={height}/>
+
+            </>}
+        </div>
+    );
+});
 export default App;

@@ -1,46 +1,46 @@
-# Getting Started with Create React App
+# collaborate-on-fire-example
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple example to get you started with collaborate-on-fire and help understand the basic structure.
 
-## Available Scripts
+## Concept
+The example shows how to create a simple, stateful application using `mobx-keystone`, `mobx` and `react`. In this app, user cursors are tracked as they move around the screen in a shared environment. Any user can manipulate objects on a very basic SVG canvas by dragging them around. 
 
-In the project directory, you can run:
+A simple multi-user game can be played using the "start adding" button (one user can press this - or more than one to make it harder). The object is to move all like colors together so that they touch.
 
-### `npm start`
+## Setup
+This example requires a firebase application with `firestore`,`realtime database` and `authentication`. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+You'll likely also want to set up `cloud storage` for storing snaphots (optional) and `hosting` (optional).
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Using Firebase CLI
+Run: `firebase init`
 
-### `npm test`
+Use the console to select:
+* Realtime Database*
+* Firestore*
+* Hosting (optional)
+* Storage (optional)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+`*` = required
 
-### `npm run build`
+Follow the instructions if required to visit the web console to complete setup.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Configure firebase authentication to use 'Google' authentication (Note: provider option can be switched in RootStore.login method if desired).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Firebase Config
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Add a "Web App" in the firebase console. Go through the steps until you get the `firebaseConfig`
+2. Copy the `firebaseConfig` object into a new file called `'src/config.js'`
+3. Add `export default firebaseConfig;` at the end of that file
 
-### `npm run eject`
+## File ID
+A file ID is used to save data consistently across the different firebase systems. This example uses a hard-coded file ID called 'COF_EXAMPLE_FILE' that is passed to the RootStore constructor. A real-world application would need to manage the file lifecycle for maintaining file IDs.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Run
+```sh
+yarn start
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## License
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+MIT
